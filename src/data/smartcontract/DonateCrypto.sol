@@ -41,7 +41,7 @@ contract DonateCrypto {
 
         require(campaign.author == msg.sender, "You cant withdraw from this campaign");
         require(campaign.active == true, "Cant withdraw from closed campaign.");
-        require(campaign.balance > fee, "You dont have enought money to withdraw");
+        require(campaign.balance > fee, "You dont have enough money to withdraw");
 
         address payable recipient = payable(campaign.author);
 
