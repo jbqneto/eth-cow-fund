@@ -1,0 +1,111 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 54% 98%;
+    --foreground: 34 25% 18%;
+
+    --card: 42 46% 98%;
+    --card-foreground: 34 25% 18%;
+
+    --popover: 42 46% 98%;
+    --popover-foreground: 34 25% 18%;
+
+    --primary: 34 25% 43%;
+    --primary-foreground: 42 54% 98%;
+
+    --secondary: 162 23% 46%;
+    --secondary-foreground: 42 54% 98%;
+
+    --muted: 42 15% 90%;
+    --muted-foreground: 34 10% 40%;
+
+    --accent: 19 84% 78%;
+    --accent-foreground: 34 25% 18%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 42 54% 98%;
+
+    --border: 34 10% 84%;
+    --input: 34 10% 84%;
+    --ring: 34 25% 43%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 34 25% 10%;
+    --foreground: 42 54% 98%;
+
+    --card: 34 25% 12%;
+    --card-foreground: 42 54% 98%;
+
+    --popover: 34 25% 12%;
+    --popover-foreground: 42 54% 98%;
+
+    --primary: 42 54% 90%;
+    --primary-foreground: 34 25% 18%;
+
+    --secondary: 162 23% 46%;
+    --secondary-foreground: 42 54% 98%;
+
+    --muted: 34 25% 18%;
+    --muted-foreground: 34 10% 70%;
+
+    --accent: 19 84% 72%;
+    --accent-foreground: 34 25% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 42 54% 98%;
+
+    --border: 34 25% 22%;
+    --input: 34 25% 22%;
+    --ring: 42 54% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-cow-beige text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-cow-brown text-white rounded-full px-6 py-3 font-medium transition-all hover:bg-opacity-90 hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-cow-teal text-white rounded-full px-6 py-3 font-medium transition-all hover:bg-opacity-90 hover:shadow-md;
+  }
+  
+  .btn-accent {
+    @apply bg-cow-coral text-white rounded-full px-6 py-3 font-medium transition-all hover:bg-opacity-90 hover:shadow-md;
+  }
+
+  .campaign-card {
+    @apply bg-white rounded-2xl shadow-md overflow-hidden transition-all hover:shadow-lg border border-cow-beige hover:border-cow-blue;
+  }
+  
+  .progress-bar {
+    @apply h-2 bg-muted rounded-full overflow-hidden;
+  }
+  
+  .progress-bar-fill {
+    @apply h-full bg-cow-teal rounded-full;
+  }
+}
