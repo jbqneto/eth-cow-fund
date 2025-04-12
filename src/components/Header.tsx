@@ -22,6 +22,13 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
+    const walletAddr = service.getWalletFromStorage();
+
+    if (walletAddr) setWalletAddress(walletAddr);
+
+  }, []);
+
+  useEffect(() => {
 
     if (walletAddress === '') {
       setWalletConnected(false);

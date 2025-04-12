@@ -1,13 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Progress } from '@/components/ui/progress';
+import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import { AlertCircle, Calendar, Copy, ExternalLink, Heart, Link, User } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Calendar, User, Heart, AlertCircle, Clock, Link, Copy, ExternalLink } from 'lucide-react';
 
 interface Campaign {
   id: string;
@@ -17,7 +17,6 @@ interface Campaign {
   raised: number;
   goal: number;
   creator: string;
-  deadline: string;
   isFunded: boolean;
   backers: number;
   createdAt: string;
@@ -32,7 +31,6 @@ const mockCampaigns: Record<string, Campaign> = {
     raised: 1.2,
     goal: 3,
     creator: '0xabc123def456abc123def456abc123def456abc1',
-    deadline: 'May 30, 2025',
     isFunded: false,
     backers: 15,
     createdAt: 'April 1, 2025',
@@ -45,7 +43,6 @@ const mockCampaigns: Record<string, Campaign> = {
     raised: 2.5,
     goal: 2.5,
     creator: '0xdef456abc123def456abc123def456abc123def45',
-    deadline: 'April 15, 2025',
     isFunded: true,
     backers: 28,
     createdAt: 'March 15, 2025',
@@ -57,29 +54,29 @@ const CampaignDetail: React.FC = () => {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [contributionAmount, setContributionAmount] = useState('0.1');
   const [isContributing, setIsContributing] = useState(false);
-  
+
   useEffect(() => {
     // Mock API call to fetch campaign details
     if (id && mockCampaigns[id]) {
       setCampaign(mockCampaigns[id]);
     }
   }, [id]);
-  
+
   const handleContribute = async () => {
     if (!campaign) return;
-    
+
     setIsContributing(true);
     try {
       // Mock implementation - in a real app, we would:
       // 1. Connect to user's wallet
       // 2. Send transaction to the smart contract
       console.log(`Contributing ${contributionAmount} ETH to campaign ${id}`);
-      
+
       // Simulate blockchain transaction
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       toast.success(`Successfully contributed ${contributionAmount} ETH!`);
-      
+
       // Update local state to reflect contribution
       setCampaign(prev => {
         if (!prev) return null;
@@ -97,14 +94,14 @@ const CampaignDetail: React.FC = () => {
       setIsContributing(false);
     }
   };
-  
+
   const copyContractAddress = () => {
     if (!campaign) return;
-    
+
     navigator.clipboard.writeText(campaign.id);
     toast.success('Contract address copied to clipboard');
   };
-  
+
   if (!campaign) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -123,13 +120,13 @@ const CampaignDetail: React.FC = () => {
       </div>
     );
   }
-  
+
   const progressPercentage = Math.min(Math.round((campaign.raised / campaign.goal) * 100), 100);
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       <main className="flex-1 py-12 px-4">
         <div className="container mx-auto max-w-4xl">
           {campaign.isFunded && (
@@ -142,23 +139,23 @@ const CampaignDetail: React.FC = () => {
               </p>
             </div>
           )}
-          
+
           <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-cow-beige mb-8">
             {campaign.image && (
               <div className="w-full h-64 md:h-72 lg:h-80 bg-cow-blue/10">
-                <img 
-                  src={campaign.image} 
-                  alt={campaign.title} 
-                  className="w-full h-full object-cover" 
+                <img
+                  src={campaign.image}
+                  alt={campaign.title}
+                  className="w-full h-full object-cover"
                 />
               </div>
             )}
-            
+
             <div className="p-6 md:p-8">
               <h1 className="text-2xl md:text-3xl font-bold text-cow-brown mb-4">
                 {campaign.title}
               </h1>
-              
+
               <div className="flex flex-wrap gap-4 text-sm text-cow-brown/70 mb-6">
                 <div className="flex items-center">
                   <User className="h-4 w-4 mr-2" />
@@ -170,12 +167,8 @@ const CampaignDetail: React.FC = () => {
                   <Calendar className="h-4 w-4 mr-2" />
                   <span>Created: {campaign.createdAt}</span>
                 </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2" />
-                  <span>Deadline: {campaign.deadline}</span>
-                </div>
               </div>
-              
+
               <div className="mb-6">
                 <div className="flex justify-between text-sm mb-1">
                   <span className="font-medium">{campaign.raised} ETH raised</span>
@@ -189,15 +182,15 @@ const CampaignDetail: React.FC = () => {
                   <span>{progressPercentage}% funded</span>
                 </div>
               </div>
-              
+
               <div className="mb-8 whitespace-pre-line">
                 <h2 className="text-xl font-semibold text-cow-brown mb-3">About This Campaign</h2>
                 <p className="text-cow-brown/80">{campaign.description}</p>
               </div>
-              
+
               <div className="border-t border-cow-beige pt-6">
                 <h2 className="text-xl font-semibold text-cow-brown mb-3">Support This Campaign</h2>
-                
+
                 <div className="bg-cow-lightBeige rounded-lg p-6 mb-6">
                   <div className="mb-4">
                     <label htmlFor="amount" className="block text-sm font-medium text-cow-brown mb-2">
@@ -224,25 +217,25 @@ const CampaignDetail: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex justify-between text-sm text-cow-brown/70">
-                    <button 
+                    <button
                       className="hover:text-cow-teal flex items-center"
                       onClick={() => setContributionAmount('0.05')}
                     >
                       0.05 ETH
                     </button>
-                    <button 
+                    <button
                       className="hover:text-cow-teal flex items-center"
                       onClick={() => setContributionAmount('0.1')}
                     >
                       0.1 ETH
                     </button>
-                    <button 
+                    <button
                       className="hover:text-cow-teal flex items-center"
                       onClick={() => setContributionAmount('0.5')}
                     >
                       0.5 ETH
                     </button>
-                    <button 
+                    <button
                       className="hover:text-cow-teal flex items-center"
                       onClick={() => setContributionAmount('1')}
                     >
@@ -250,7 +243,7 @@ const CampaignDetail: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="border border-cow-beige rounded-lg p-4">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center text-sm text-cow-brown">
@@ -258,18 +251,18 @@ const CampaignDetail: React.FC = () => {
                       <span>Smart Contract</span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        variant="outline"
+                        size="sm"
                         className="text-xs border-cow-brown/20 text-cow-brown"
                         onClick={copyContractAddress}
                       >
                         <Copy className="h-3 w-3 mr-1" />
                         Copy
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        variant="outline"
+                        size="sm"
                         className="text-xs border-cow-brown/20 text-cow-brown"
                         onClick={() => window.open(`https://etherscan.io/address/${campaign.id}`, '_blank')}
                       >
@@ -287,7 +280,7 @@ const CampaignDetail: React.FC = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
