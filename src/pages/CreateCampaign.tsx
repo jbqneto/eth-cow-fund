@@ -5,13 +5,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { AlignLeft, Coins, Info, Type, Upload } from 'lucide-react';
+import { CampaignService } from '@/service/campaign.service';
+import { Web3Service } from '@/service/web3.service';
+import { AlignLeft, BadgeCheck, Coins, Info, Type, Upload } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
+type Note = {
+  icon: 'info' | 'success';
+  title: string;
+  text: string;
+}
+
 const CreateCampaign: React.FC = () => {
+  const service = new CampaignService();
   const navigate = useNavigate();
+  const [note, setNote] = useState<Note>({
+    icon: 'info',
+    title: 'Important Note',
+    text: `By creating this campaign, you're deploying a smart contract on the Ethereum network.
+            This requires gas fees which will be handled by your wallet upon submission.`
+  })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -50,16 +65,16 @@ const CreateCampaign: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Mock implementation - in a real app, we would:
-      // 1. Upload image to IPFS if provided
-      // 2. Create campaign on the blockchain
       console.log('Creating campaign with data:', formData);
 
-      // Simulate blockchain transaction
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await service.addCampaign({
+        title: formData.title,
+        creator: Web3Service.getWalletFromStorage(),
+        description: formData.description,
+        image: ""
+      })
 
-      toast.success('Campaign created successfully!');
-      navigate('/');
+      toast.success(`Campaign created successfully: ${response.transactionHash}`);
     } catch (error) {
       console.error('Error creating campaign:', error);
       toast.error('Failed to create campaign. Please try again.');
@@ -158,12 +173,18 @@ const CreateCampaign: React.FC = () => {
                 </div>
 
                 <div className="bg-cow-blue/10 rounded-lg p-4 text-sm text-cow-brown/80 flex items-start space-x-3">
-                  <Info className="h-5 w-5 text-cow-teal shrink-0 mt-0.5" />
+
+                  {note.icon === 'info' ? (
+                    <Info className="h-5 w-5 text-cow-teal shrink-0 mt-0.5" />
+                  ) : note.icon === 'success' ? (
+                    <BadgeCheck className="h-5 w-5 text-cow-teal shrink-0 mt-0.5" />
+                  ) : null
+                  }
+
                   <div>
-                    <p className="font-medium text-cow-brown mb-1">Important Note</p>
+                    <p className="font-medium text-cow-brown mb-1">{note.title}</p>
                     <p>
-                      By creating this campaign, you're deploying a smart contract on the Ethereum network.
-                      This requires gas fees which will be handled by your wallet upon submission.
+                      {note.text}
                     </p>
                   </div>
                 </div>

@@ -22,7 +22,7 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    const walletAddr = service.getWalletFromStorage();
+    const walletAddr = Web3Service.getWalletFromStorage();
 
     if (walletAddr) setWalletAddress(walletAddr);
 

@@ -1,17 +1,22 @@
+import ABI from "@/data/smartcontract/ABI.json";
 import Web3 from "web3";
+
+const CONTRACT_ADDRESS = "0x754F70CAaE46f5DF5c2361AEC3bF438A35CFFFDE";
 
 export class Web3Service {
 
-    private readonly STORAGE_PREFIX: string = "_cow_";
+    private static readonly STORAGE_PREFIX: string = "_cow_";
 
-    public async login(): Promise<string[]> {
+    public static get web3(): Web3 {
         const _window = window as any;
 
         if (!_window.ethereum) throw new Error("No Wallet connector not found!");
 
-        const web3 = new Web3(_window.ethereum);
+        return new Web3(_window.ethereum);
+    }
 
-        const accounts = await web3.eth.requestAccounts();
+    public async login(): Promise<string[]> {
+        const accounts = await Web3Service.web3.eth.requestAccounts();
 
         if (!accounts || !accounts.length) {
             throw new Error("Wallet not connected or not found!");
@@ -24,10 +29,16 @@ export class Web3Service {
         return addr.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length);
     }
 
-    //TODO: Put this on a proper place. The service must not be coupled to "window"
-    public getWalletFromStorage(): string | null {
+    public static getContract(fromAddress?: string) {
+        const from = fromAddress ?? this.getWalletFromStorage();
+
+        return new Web3Service.web3.eth.Contract(ABI, CONTRACT_ADDRESS, { from });
+    }
+
+    public static getWalletFromStorage(): string | null {
         const wallet = window.localStorage.getItem(this.STORAGE_PREFIX + "wallet");
 
         return wallet && wallet !== "" ? wallet : null;
     }
+
 }
