@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+import { CampaignService } from '@/service/campaign.service';
 import { AlertCircle, Calendar, Copy, ExternalLink, Heart, Link, User } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -22,43 +23,22 @@ interface Campaign {
   createdAt: string;
 }
 
-const mockCampaigns: Record<string, Campaign> = {
-  '1': {
-    id: '1',
-    title: 'Community Garden Project',
-    description: 'Help us build a sustainable garden to feed our local community and teach children about growing food. This project aims to transform an empty lot into a vibrant space where neighbors can grow fresh produce, herbs, and flowers.\n\nThe funds will be used for:\n- Purchasing soil, seeds, and gardening tools\n- Building raised beds and irrigation systems\n- Creating educational signage\n- Hosting workshops on sustainable gardening practices\n\nOur community garden will not only provide fresh food but also serve as a gathering place that strengthens neighborhood bonds and teaches valuable skills to the next generation.',
-    image: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?auto=format&fit=crop&w=800&q=80',
-    raised: 1.2,
-    goal: 3,
-    creator: '0xabc123def456abc123def456abc123def456abc1',
-    isFunded: false,
-    backers: 15,
-    createdAt: 'April 1, 2025',
-  },
-  '2': {
-    id: '2',
-    title: 'Animal Shelter Renovation',
-    description: 'Our local animal shelter needs urgent repairs to continue housing stray animals safely. The current facility has been operating for over 15 years and requires significant updates to maintain proper care standards for the animals.\n\nThe renovation project includes:\n- Fixing leaking roofs and damaged kennels\n- Updating the ventilation system\n- Installing proper drainage and cleaning facilities\n- Creating a dedicated medical treatment area\n\nBy supporting this campaign, you\'re directly helping improve the living conditions for dozens of dogs and cats while they wait for their forever homes.',
-    image: 'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?auto=format&fit=crop&w=800&q=80',
-    raised: 2.5,
-    goal: 2.5,
-    creator: '0xdef456abc123def456abc123def456abc123def45',
-    isFunded: true,
-    backers: 28,
-    createdAt: 'March 15, 2025',
-  },
-};
-
 const CampaignDetail: React.FC = () => {
+  const service = new CampaignService();
+
   const { id } = useParams<{ id: string }>();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [contributionAmount, setContributionAmount] = useState('0.1');
   const [isContributing, setIsContributing] = useState(false);
 
   useEffect(() => {
-    // Mock API call to fetch campaign details
-    if (id && mockCampaigns[id]) {
-      setCampaign(mockCampaigns[id]);
+
+    if (id) {
+      service.getCampaign(parseInt(id))
+        .then((camp) => {
+          console.log("Camp: ", camp);
+        })
+        .catch((err) => console.error("Error getting campaign " + id, err))
     }
   }, [id]);
 

@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Web3Service } from '@/service/web3.service';
-import { Wallet } from 'lucide-react';
+import { LogOut, Wallet } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CowLogo from './CowLogo';
@@ -20,6 +20,12 @@ const Header: React.FC = () => {
       .then((accounts) => setWalletAddress(accounts[0]))
 
   };
+
+  const disconnectWallet = () => {
+    service.logout();
+    setWalletAddress('');
+  };
+
 
   useEffect(() => {
     const walletAddr = Web3Service.getWalletFromStorage();
@@ -57,13 +63,22 @@ const Header: React.FC = () => {
               className="btn-primary flex items-center"
             >
               <Wallet className="mr-2 h-4 w-4" />
-              {walletBtnText}
+              Connect Wallet
             </Button>
           ) : (
             <div className="flex items-center space-x-4">
               <span className="text-sm text-cow-brown bg-cow-beige rounded-full px-3 py-1 border border-cow-brown/20">
-                {service.formatAddress(walletAddress)}
+                {walletAddress}
               </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={disconnectWallet}
+                className="text-cow-brown hover:bg-cow-brown/10"
+                title="Logout"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
               <Link to="/create">
                 <Button className="btn-secondary">Create Campaign</Button>
               </Link>

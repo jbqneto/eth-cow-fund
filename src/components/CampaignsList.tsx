@@ -1,8 +1,10 @@
 
 import { Button } from '@/components/ui/button';
+import { Campaign } from '@/data/domain';
 import { mockCampaigns } from '@/data/mocks';
+import { CampaignService } from '@/service/campaign.service';
 import { Award, Clock, Sparkles } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CampaignCard from './CampaignCard';
 
 // Mock data for campaigns
@@ -10,7 +12,17 @@ import CampaignCard from './CampaignCard';
 type FilterOption = 'all' | 'newest' | 'popular' | 'closing';
 
 const CampaignsList: React.FC = () => {
+  const service = new CampaignService();
+
   const [filter, setFilter] = useState<FilterOption>('all');
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+
+  useEffect(() => {
+    service.getCampaigns()
+      .then((result) => console.log("Campaigns: ", result))
+      .catch((err) => console.error("Error getting campaigns: ", err));
+
+  }, []);
 
   return (
     <section className="py-12 md:py-16 px-4 bg-cow-lightBeige">
