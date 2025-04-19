@@ -6,6 +6,8 @@ Yes, the front-end of this project was build using lovable because I'm (dev) a t
 
 This project is a DAPP (Decentralized application) that connects with a EVM smart contract for ETH donations.
 
+Project on Ronin testnet: https://saigon-app.roninchain.com/tx/0xd1e715641e53d30354da10c5fe41863f919ad0dc1c41174c4e125e96d98a5974
+
 ## Project TODO:
 
 The teacher of this project left some challenges, which I will do and increment later:
