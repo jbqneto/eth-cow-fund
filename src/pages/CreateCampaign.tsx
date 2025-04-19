@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { CampaignService } from '@/service/campaign.service';
 import { Web3Service } from '@/service/web3.service';
-import { AlignLeft, BadgeCheck, Coins, Info, Type, Upload } from 'lucide-react';
+import { AlignLeft, BadgeCheck, Coins, Info, Type } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -24,8 +24,8 @@ const CreateCampaign: React.FC = () => {
   const [note, setNote] = useState<Note>({
     icon: 'info',
     title: 'Important Note',
-    text: `By creating this campaign, you're deploying a smart contract on the Ethereum network.
-            This requires gas fees which will be handled by your wallet upon submission.`
+    text: `By creating this campaign, you're deploying a smart contract, which 
+            requires gas fees.`
   })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,8 +33,11 @@ const CreateCampaign: React.FC = () => {
     description: '',
     goal: '',
     image: null as File | null,
+    imageUrl: '',
+    videoUrl: ''
   });
 
+  //TODO: Upload to a IFPS 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFormData({
@@ -134,6 +137,38 @@ const CreateCampaign: React.FC = () => {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="img-url" className="flex items-center text-cow-brown">
+                    <Type className="h-4 w-4 mr-2" />
+                    Image URL
+                  </Label>
+                  <Input
+                    id="img-url"
+                    name="image"
+                    placeholder="Enter the URL of your image"
+                    value={formData.imageUrl}
+                    onChange={handleChange}
+                    required
+                    className="border-cow-brown/20 focus:border-cow-teal focus:ring-cow-teal"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="img-url" className="flex items-center text-cow-brown">
+                    <Type className="h-4 w-4 mr-2" />
+                    Image URL
+                  </Label>
+                  <Input
+                    id="img-url"
+                    name="image"
+                    placeholder="Enter the URL of your image"
+                    value={formData.imageUrl}
+                    onChange={handleChange}
+                    required
+                    className="border-cow-brown/20 focus:border-cow-teal focus:ring-cow-teal"
+                  />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="goal" className="flex items-center text-cow-brown">
@@ -155,6 +190,7 @@ const CreateCampaign: React.FC = () => {
                   </div>
                 </div>
 
+                { /** TODO: Implement upload to a IFPS
                 <div className="space-y-2">
                   <Label htmlFor="image" className="flex items-center text-cow-brown">
                     <Upload className="h-4 w-4 mr-2" />
@@ -171,6 +207,7 @@ const CreateCampaign: React.FC = () => {
                     Recommended: 1200 x 630px, max 2MB. This image will be displayed on your campaign page.
                   </p>
                 </div>
+                 */}
 
                 <div className="bg-cow-blue/10 rounded-lg p-4 text-sm text-cow-brown/80 flex items-start space-x-3">
 

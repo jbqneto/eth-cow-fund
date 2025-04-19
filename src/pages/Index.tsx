@@ -1,9 +1,9 @@
 
-import React from 'react';
-import Header from '@/components/Header';
-import Hero from '@/components/Hero';
 import CampaignsList from '@/components/CampaignsList';
 import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import React from 'react';
 
 const Index: React.FC = () => {
   return (
