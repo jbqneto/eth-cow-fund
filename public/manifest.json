@@ -1,0 +1,26 @@
+{
+    "name": "Little Eth Cow",
+    "short_name": "EthCow",
+    "description": "Contribute or create your Testnet Ronin campaigns.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#FEF6E4",
+    "theme_color": "#5E8B7E",
+    "icons": [
+        {
+            "src": "/favicon_multi.ico",
+            "sizes": "48x48 32x32 16x16",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/logo-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/logo-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}

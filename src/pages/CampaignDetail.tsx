@@ -17,12 +17,20 @@ import { toast } from 'sonner';
 
 const service = CampaignService.getInstance();
 
+type DonateResponse = {
+  readonly transactionHash: string;
+  readonly transactionIndex: bigint;
+  readonly blockHash: string;
+  readonly blockNumber: bigint;
+}
+
 const CampaignDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [contributionAmount, setContributionAmount] = useState('0.1');
   const [isContributing, setIsContributing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [donateResponse, setDonateResponse] = useState<DonateResponse | null>(null);
 
   const { walletAddress, isConnected } = useWallet();
 
@@ -56,9 +64,10 @@ const CampaignDetail: React.FC = () => {
       console.log("Will contribute with " + amount);
 
       // Simulate blockchain transaction
-      const response = await service.donate(walletAddress, parseInt(id), amount);
+      const _response = await service.donate(walletAddress, parseInt(id), amount);
 
-      console.log("Response: ", response);
+      console.log("Response: ", donateResponse);
+      setDonateResponse(_response);
 
       toast.success(`Successfully contributed ${contributionAmount} ETH!`);
     } catch (error) {
@@ -227,38 +236,42 @@ const CampaignDetail: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="border border-cow-beige rounded-lg p-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center text-sm text-cow-brown">
-                      <Link className="h-4 w-4 mr-1.5" />
-                      <span>Smart Contract</span>
+                {donateResponse !== null && (
+
+                  <div className="border border-cow-beige rounded-lg p-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center text-sm text-cow-brown">
+                        <Link className="h-4 w-4 mr-1.5" />
+                        <span>Smart Contract</span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs border-cow-brown/20 text-cow-brown"
+                          onClick={copyContractAddress}
+                        >
+                          <Copy className="h-3 w-3 mr-1" />
+                          Copy
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs border-cow-brown/20 text-cow-brown"
+                          onClick={() => window.open(`https://etherscan.io/address/${campaign.id}`, '_blank')}
+                        >
+                          <ExternalLink className="h-3 w-3 mr-1" />
+                          View on Etherscan
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs border-cow-brown/20 text-cow-brown"
-                        onClick={copyContractAddress}
-                      >
-                        <Copy className="h-3 w-3 mr-1" />
-                        Copy
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs border-cow-brown/20 text-cow-brown"
-                        onClick={() => window.open(`https://etherscan.io/address/${campaign.id}`, '_blank')}
-                      >
-                        <ExternalLink className="h-3 w-3 mr-1" />
-                        View on Etherscan
-                      </Button>
+                    <div className="mt-2 bg-cow-beige/50 p-2 rounded text-xs font-mono overflow-x-auto text-cow-brown/80">
+                      {campaign.id}
                     </div>
                   </div>
-                  <div className="mt-2 bg-cow-beige/50 p-2 rounded text-xs font-mono overflow-x-auto text-cow-brown/80">
-                    {campaign.id}
-                  </div>
-                </div>
+                )}
               </div>
+
             </div>
           </div>
         </div>
