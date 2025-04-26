@@ -102,7 +102,9 @@ const CreateCampaign: React.FC = () => {
           title: formData.title,
           creator: Web3Service.getWalletFromStorage(),
           description: formData.description,
-          image: ""
+          goal: formData.goal,
+          image: formData.imageUrl,
+          video: formData.videoUrl
         });
 
       toast.success(`Campaign created successfully: ${response.transactionHash}`);

@@ -20,9 +20,15 @@ export class CampaignService {
     }
 
     public async addCampaign(address: string, campaign: CreateCampaign) {
-        console.log("Campaign: ", campaign);
+        console.log("Creating Campaign: ", campaign);
 
-        return this.contract.methods.addCampaign(campaign.title, campaign.description)
+        return this.contract.methods.addCampaign(
+            campaign.title,
+            campaign.description,
+            campaign.image,
+            campaign.video ?? "",
+            campaign.goal ?? "0"
+        )
             .send({ from: address });
     }
 

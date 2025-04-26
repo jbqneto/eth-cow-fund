@@ -2,25 +2,27 @@ export type CreateCampaign = {
     title: string;
     description: string;
     image: string;
+    video?: string;
+    goal: string;
     creator: string;
 }
 
 export type ICampaign = CreateCampaign & {
     id: string;
     raised: string;
-    goal: string;
     isFunded?: boolean;
     closed?: boolean;
 }
 
 export class Campaign implements ICampaign {
+    goal: string;
     title: string;
     description: string;
     image: string;
+    video?: string;
     creator: string;
     id: string;
     raised: string;
-    goal: string;
     isFunded?: boolean;
     closed?: boolean;
 
