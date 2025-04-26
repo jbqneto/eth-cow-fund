@@ -16,10 +16,20 @@ The teacher of this project left some challenges, which I will do and increment 
 -Implement a withdrawal feature on the campaign page for the author;
 -Create an admin page for the administrator's withdrawal functionality;
 -Test with the Brave Wallet (native to the Brave browser);
+- Refactor and recreate the project using NextJS
+- Create my coin and use it to create a campaign
+- Create dynamic NFT to represent the ownership of a campaign (similar to UNISWAP pool)
 
-## How can I edit this code?
+## Change logs
 
-There are several ways of editing your application.
+### 26/04/2025
+
+- Added testing listeners on the wallet
+- Created Wallet provider and added validations on the connection and network (based on listener)
+- loading list of campaigns and campaign detail from blockchain
+- changed loading of contract not depending on wallet (because of the views)
+- ui improvements
+- utils improvements
 
 **Use your preferred IDE**
 

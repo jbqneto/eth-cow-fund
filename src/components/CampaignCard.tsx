@@ -1,19 +1,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { ICampaign } from '@/data/domain';
 import { Heart, User } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface CampaignCardProps {
-  id: string;
-  title: string;
-  description: string;
-  image?: string;
-  raised: number;
-  goal: number;
-  creator: string;
-  isFunded?: boolean;
+type CampaignCardProps = ICampaign & {
+
 }
 
 const CampaignCard: React.FC<CampaignCardProps> = ({
@@ -26,7 +20,10 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   creator,
   isFunded = false,
 }) => {
-  const progressPercentage = Math.min(Math.round((raised / goal) * 100), 100);
+  const _raised = parseFloat(raised.toString());
+  const _goal = parseFloat(goal.toString());
+
+  const progressPercentage = Math.min(Math.round((_raised / _goal) * 100), 100);
 
   return (
     <div className="campaign-card">
@@ -56,8 +53,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
 
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-1">
-            <span className="font-medium">{raised} ETH raised</span>
-            <span>{goal} ETH goal</span>
+            <span className="font-medium">{raised.toString()} ETH raised</span>
+            <span>{goal.toString()} ETH goal</span>
           </div>
           <Progress value={progressPercentage} className="progress-bar">
             <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>

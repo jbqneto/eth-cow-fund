@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { Campaign } from '@/data/domain';
-import { mockCampaigns } from '@/data/mocks';
+import { ICampaign } from '@/data/domain';
+import { toCampaignType } from '@/mappers/campaign.mapper';
 import { CampaignService } from '@/service/campaign.service';
 import { Award, Clock, Sparkles } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
@@ -11,15 +11,31 @@ import CampaignCard from './CampaignCard';
 
 type FilterOption = 'all' | 'newest' | 'popular' | 'closing';
 
+const service = CampaignService.getInstance();
+
 const CampaignsList: React.FC = () => {
-  const service = new CampaignService();
 
   const [filter, setFilter] = useState<FilterOption>('all');
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<ICampaign[]>([]);
+
+  const updateCampaigns = (camps: any[]) => {
+    console.log("Campaigns: ", camps);
+
+    setCampaigns(
+      camps.map((camp, index) => ({
+        ...toCampaignType(camp),
+        id: "" + (index + 1)
+      }))
+    )
+  }
 
   useEffect(() => {
     service.getCampaigns()
-      .then((result) => console.log("Campaigns: ", result))
+      .then((result) => {
+        if (Array.isArray(result)) {
+          updateCampaigns(result);
+        }
+      })
       .catch((err) => console.error("Error getting campaigns: ", err));
 
   }, []);
@@ -71,7 +87,7 @@ const CampaignsList: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockCampaigns.map((campaign) => (
+          {campaigns.map((campaign) => (
             <CampaignCard
               key={campaign.id}
               {...campaign}

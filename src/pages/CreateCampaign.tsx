@@ -18,8 +18,11 @@ type Note = {
   text: string;
 }
 
+const service = CampaignService.getInstance();
+const web3Service = Web3Service.getInstance();
+
 const CreateCampaign: React.FC = () => {
-  const service = new CampaignService();
+
   const navigate = useNavigate();
   const [note, setNote] = useState<Note>({
     icon: 'info',
@@ -69,13 +72,21 @@ const CreateCampaign: React.FC = () => {
 
     try {
       console.log('Creating campaign with data:', formData);
+      const address = web3Service.getConnectedWallet();
 
-      const response = await service.addCampaign({
-        title: formData.title,
-        creator: Web3Service.getWalletFromStorage(),
-        description: formData.description,
-        image: ""
-      })
+      if (!address) {
+        toast.error('Please connect your wallet');
+        return;
+      }
+
+      const response = await service.addCampaign(
+        address,
+        {
+          title: formData.title,
+          creator: Web3Service.getWalletFromStorage(),
+          description: formData.description,
+          image: ""
+        });
 
       toast.success(`Campaign created successfully: ${response.transactionHash}`);
     } catch (error) {
