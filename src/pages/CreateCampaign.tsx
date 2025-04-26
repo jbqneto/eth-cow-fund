@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { getYouTubeVideoId } from '@/lib/utils';
+import { isValidUrl } from '@/lib/validator';
 import { CampaignService } from '@/service/campaign.service';
 import { Web3Service } from '@/service/web3.service';
 import { AlignLeft, BadgeCheck, Coins, Info, Type } from 'lucide-react';
@@ -63,14 +65,29 @@ const CreateCampaign: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.description || !formData.goal) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    setIsSubmitting(true);
-
     try {
+
+      setIsSubmitting(true);
+
+      if (!formData.title || !formData.description || !formData.goal) {
+        toast.error('Please fill in all required fields');
+        return;
+      }
+
+      if (!isValidUrl(formData.imageUrl)) {
+        toast.error('Invalid image URL.');
+        return;
+      }
+
+      if (formData.videoUrl) {
+        const url = getYouTubeVideoId(formData.videoUrl);
+
+        if (!url) {
+          toast.error("Invalid youtube video: " + formData.videoUrl);
+          return;
+        }
+      }
+
       console.log('Creating campaign with data:', formData);
       const address = web3Service.getConnectedWallet();
 
@@ -118,7 +135,7 @@ const CreateCampaign: React.FC = () => {
                 <div className="space-y-2">
                   <Label htmlFor="title" className="flex items-center text-cow-brown">
                     <Type className="h-4 w-4 mr-2" />
-                    Campaign Title
+                    Campaign Title (*)
                   </Label>
                   <Input
                     id="title"
@@ -134,7 +151,7 @@ const CreateCampaign: React.FC = () => {
                 <div className="space-y-2">
                   <Label htmlFor="description" className="flex items-center text-cow-brown">
                     <AlignLeft className="h-4 w-4 mr-2" />
-                    Description
+                    Description (*)
                   </Label>
                   <Textarea
                     id="description"
@@ -151,11 +168,12 @@ const CreateCampaign: React.FC = () => {
                 <div className="space-y-2">
                   <Label htmlFor="img-url" className="flex items-center text-cow-brown">
                     <Type className="h-4 w-4 mr-2" />
-                    Image URL
+                    Image URL (*)
                   </Label>
                   <Input
                     id="img-url"
-                    name="image"
+                    name="imageUrl"
+                    type='text'
                     placeholder="Enter the URL of your image"
                     value={formData.imageUrl}
                     onChange={handleChange}
@@ -167,13 +185,14 @@ const CreateCampaign: React.FC = () => {
                 <div className="space-y-2">
                   <Label htmlFor="img-url" className="flex items-center text-cow-brown">
                     <Type className="h-4 w-4 mr-2" />
-                    Image URL
+                    Video URL
                   </Label>
                   <Input
-                    id="img-url"
-                    name="image"
-                    placeholder="Enter the URL of your image"
-                    value={formData.imageUrl}
+                    id="video-url"
+                    name="videoUrl"
+                    type='text'
+                    placeholder="Enter the URL of your video"
+                    value={formData.videoUrl}
                     onChange={handleChange}
                     required
                     className="border-cow-brown/20 focus:border-cow-teal focus:ring-cow-teal"
