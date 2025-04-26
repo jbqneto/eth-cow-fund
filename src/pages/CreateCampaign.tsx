@@ -196,7 +196,6 @@ const CreateCampaign: React.FC = () => {
                     placeholder="Enter the URL of your video"
                     value={formData.videoUrl}
                     onChange={handleChange}
-                    required
                     className="border-cow-brown/20 focus:border-cow-teal focus:ring-cow-teal"
                   />
                 </div>
