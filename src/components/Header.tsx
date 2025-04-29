@@ -7,11 +7,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CowLogo from './CowLogo';
 import { useWallet } from './providers/WalletProvider';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 const service = Web3Service.getInstance();
 
 const Header: React.FC = () => {
-  const { walletAddress, setWalletAddress, chain, setChain } = useWallet();
+  const { walletAddress, setWalletAddress, chainId, getChain, setChainId } = useWallet();
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletText, setWalletText] = useState('');
   const [walletBtnText, setWalletBtnText] = useState('Connect wallet');
@@ -22,15 +23,22 @@ const Header: React.FC = () => {
 
     service.login()
       .then((data) => {
-        console.log("OnLogin: ", data);
         setWalletAddress(data.accounts[0])
-        setChain(data.chainId);
+        setChainId(data.chainId);
       })
 
   };
 
-  const initialize = async () => {
-    connectWallet();
+  const chainText = () => {
+    const connectedChain = getChain();
+
+    if (!connectedChain) return <span>Invalid Chain</span>;
+
+    return (
+      <span>
+        {connectedChain.icon} {connectedChain.name}
+      </span>
+    )
   }
 
   const disconnectWallet = () => {
@@ -48,8 +56,6 @@ const Header: React.FC = () => {
 
       console.log("window eth is ok: " + walletAddr);
 
-      initialize();
-
       // Detecta troca de conta
       ethereum.on("accountsChanged", (accounts: string[]) => {
         console.log("Conta mudou:", accounts);
@@ -58,7 +64,7 @@ const Header: React.FC = () => {
       // Detecta troca de rede
       ethereum.on("chainChanged", (chainId: string) => {
         console.log("Rede mudou:", chainId);
-        setChain(BigInt(chainId).toString());
+        setChainId(BigInt(chainId).toString());
       });
 
       // Detecta conexão
@@ -97,12 +103,12 @@ const Header: React.FC = () => {
   }, [walletAddress]);
 
   useEffect(() => {
-    if (chain === Web3Service.defaultChain.id) {
+    if (chainId === Web3Service.defaultChain.id) {
       setCorrectNetwork(true);
     } else {
       setCorrectNetwork(false);
     }
-  }, [chain])
+  }, [chainId])
 
   useEffect(() => {
 
@@ -134,20 +140,35 @@ const Header: React.FC = () => {
           ) : (
             <div className="flex items-center space-x-4">
               <span className="text-sm text-cow-brown bg-cow-beige rounded-full px-3 py-1 border border-cow-brown/20">
-                {walletText}
+                {chainText()}
               </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={disconnectWallet}
-                className="text-cow-brown hover:bg-cow-brown/10"
-                title="Logout"
-              >
-                <LogOut className="h-4 w-4" />
-              </Button>
-              <Link to="/create">
-                <Button className="btn-secondary">{walletBtnText}</Button>
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button disabled={!correctNetwork} className="btn-secondary">
+                    <Wallet className="mr-2 h-4 w-4" />{walletText}
+                  </Button>
+                </DropdownMenuTrigger>
+                {correctNetwork && (
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <Link to="/create">
+                        <Button className="btn-secondary">{walletBtnText}</Button>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={disconnectWallet}
+                        className="text-cow-brown hover:bg-cow-brown/10"
+                        title="Logout"
+                      >
+                        <LogOut className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                )}
+              </DropdownMenu>
             </div>
           )}
         </div>

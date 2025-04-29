@@ -1,8 +1,8 @@
 
+import { Github, Twitter } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CowLogo from './CowLogo';
-import { Github, Twitter } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
               A blockchain-based crowdfunding platform inspired by the Brazilian "vaquinha" tradition.
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-display font-semibold text-lg mb-4">Platform</h3>
             <ul className="space-y-2">
@@ -28,36 +28,36 @@ const Footer: React.FC = () => {
               <li><Link to="/faq" className="text-white/80 hover:text-white">FAQ</Link></li>
             </ul>
           </div>
-          
+
           <div>
-            <h3 className="font-display font-semibold text-lg mb-4">Resources</h3>
+            <h3 className="font-display font-semibold text-lg mb-4">About</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-white/80 hover:text-white">Documentation</a></li>
-              <li><a href="#" className="text-white/80 hover:text-white">Smart Contracts</a></li>
-              <li><a href="#" className="text-white/80 hover:text-white">Security</a></li>
+              <li><a href="#" className="text-white/80 hover:text-white">Project</a></li>
+              <li><a href="#" className="text-white/80 hover:text-white">Smart Contract</a></li>
+              <li><a target='_blank' href="https://dev.jbqneto.com/" className="text-white/80 hover:text-white">The Dev</a></li>
               <li><a href="#" className="text-white/80 hover:text-white">Terms of Service</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-display font-semibold text-lg mb-4">Connect</h3>
             <div className="flex space-x-4 mb-4">
-              <a href="#" className="text-white/80 hover:text-white">
+              <a target='_blank' href="https://github.com/jbqneto/eth-cow-fund" className="text-white/80 hover:text-white">
                 <Github className="h-6 w-6" />
               </a>
-              <a href="#" className="text-white/80 hover:text-white">
+              <a target='_blank' href="http://twitter.com/jbqneto31" className="text-white/80 hover:text-white">
                 <Twitter className="h-6 w-6" />
               </a>
             </div>
             <p className="text-white/80">
               Questions or feedback?<br />
-              <a href="mailto:hello@littleethcow.com" className="text-white hover:underline">
-                hello@littleethcow.com
+              <a href="mailto:contact@jbqneto.com" className="text-white hover:underline">
+                contact@jbqneto.com
               </a>
             </p>
           </div>
         </div>
-        
+
         <div className="mt-12 pt-8 border-t border-white/10 text-center text-white/60 text-sm">
           <p>© 2025 Little Eth Cow. All rights reserved.</p>
         </div>

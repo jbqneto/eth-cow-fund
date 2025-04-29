@@ -56,15 +56,16 @@ const CampaignDetail: React.FC = () => {
 
       const amount = contributionAmount ?? '0';
       const contribution = parseFloat(amount);
+      const _id = parseInt(id) - 1;
 
       if (contribution <= 0.01) {
         throw new Error("Contribution must be higher then 0.01");
       }
 
-      console.log("Will contribute with " + amount);
+      console.log(_id + "- Will contribute with " + amount);
 
       // Simulate blockchain transaction
-      const _response = await service.donate(walletAddress, parseInt(id), amount);
+      const _response = await service.donate(walletAddress, _id, amount);
 
       console.log("Response: ", donateResponse);
       setDonateResponse(_response);
@@ -242,7 +243,7 @@ const CampaignDetail: React.FC = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center text-sm text-cow-brown">
                         <Link className="h-4 w-4 mr-1.5" />
-                        <span>Smart Contract</span>
+                        <span>Transaction</span>
                       </div>
                       <div className="flex space-x-2">
                         <Button
@@ -258,10 +259,10 @@ const CampaignDetail: React.FC = () => {
                           variant="outline"
                           size="sm"
                           className="text-xs border-cow-brown/20 text-cow-brown"
-                          onClick={() => window.open(`https://etherscan.io/address/${campaign.id}`, '_blank')}
+                          onClick={() => window.open(`https://saigon-app.roninchain.com/tx/${donateResponse.transactionHash}`, '_blank')}
                         >
                           <ExternalLink className="h-3 w-3 mr-1" />
-                          View on Etherscan
+                          View Transaction
                         </Button>
                       </div>
                     </div>
