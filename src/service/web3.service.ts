@@ -63,12 +63,12 @@ export class Web3Service {
         return formatWalletAddress(addr);
     }
 
-    public static getContract(contract: string, fromAddress?: string) {
-        const from = fromAddress ?? this.getWalletFromStorage();
+    public static getContract(contract: string, from?: string) {
+        if (from) {
+            return new Web3Service.web3.eth.Contract(ABI, contract, { from });
+        }
 
-        console.log("Address: " + contract);
-
-        return new Web3Service.web3.eth.Contract(ABI, contract, { from });
+        return new Web3Service.web3.eth.Contract(ABI, contract);
     }
 
     public static setWallet(address: string) {

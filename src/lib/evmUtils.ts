@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import { fromWei as _fromWei, toWei as _toWei } from "web3-utils";
 
 const NETWORK_NAMES: Record<number, string> = {
     1: "Ethereum Mainnet",
@@ -25,7 +24,7 @@ export function formatWalletAddress(addr: string | null): string {
  * @returns string ETH value.
  */
 export const toEth = (value: bigint | string | number): string => {
-    return _fromWei(value.toString(), "ether");
+    return Web3.utils.fromWei(value.toString(), "ether");
 };
 
 /**
@@ -34,5 +33,5 @@ export const toEth = (value: bigint | string | number): string => {
  * @returns string WEI value
  */
 export const toWei = (value: string | number): string => {
-    return _toWei(value.toString(), "ether");
+    return Web3.utils.toWei(value.toString(), "ether");
 };

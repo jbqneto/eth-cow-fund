@@ -26,12 +26,14 @@ const web3Service = Web3Service.getInstance();
 const CreateCampaign: React.FC = () => {
 
   const navigate = useNavigate();
+
   const [note, setNote] = useState<Note>({
     icon: 'info',
     title: 'Important Note',
     text: `By creating this campaign, you're deploying a smart contract, which 
             requires gas fees.`
-  })
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -100,7 +102,7 @@ const CreateCampaign: React.FC = () => {
         address,
         {
           title: formData.title,
-          creator: Web3Service.getWalletFromStorage(),
+          creator: address,
           description: formData.description,
           goal: formData.goal,
           image: formData.imageUrl,
@@ -110,6 +112,18 @@ const CreateCampaign: React.FC = () => {
       toast.success(`Campaign created successfully: ${response.transactionHash}`);
     } catch (error) {
       console.error('Error creating campaign:', error);
+      if (error.message) {
+        console.error('Error Message:', error.message); // Print the error message
+      }
+      if (error.code) {
+        console.error('Error Code:', error.code); // Print the error code if available
+      }
+      if (error.stack) {
+        console.error('Error Stack:', error.stack); // Print the error stack trace if available
+      }
+      if (error.data) {
+        console.error('Error Data:', error.data); // Log any extra data.
+      }
       toast.error('Failed to create campaign. Please try again.');
     } finally {
       setIsSubmitting(false);

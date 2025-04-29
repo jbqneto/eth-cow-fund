@@ -143,10 +143,10 @@ const Header: React.FC = () => {
                 {chainText()}
               </span>
               <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button disabled={!correctNetwork} className="btn-secondary">
-                    <Wallet className="mr-2 h-4 w-4" />{walletText}
-                  </Button>
+                <DropdownMenuTrigger className="btn-primary flex items-center" disabled={!correctNetwork} >
+
+                  <Wallet className="mr-2 h-4 w-4" />{walletText}
+
                 </DropdownMenuTrigger>
                 {correctNetwork && (
                   <DropdownMenuContent>
@@ -163,7 +163,10 @@ const Header: React.FC = () => {
                         className="text-cow-brown hover:bg-cow-brown/10"
                         title="Logout"
                       >
-                        <LogOut className="h-4 w-4" />
+
+                        <LogOut className="h-4 w-4" textAnchor='Disconnect'>
+                          Disconnect
+                        </LogOut>
                       </Button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

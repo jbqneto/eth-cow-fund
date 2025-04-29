@@ -73,6 +73,7 @@ const CampaignDetail: React.FC = () => {
       toast.success(`Successfully contributed ${contributionAmount} ETH!`);
     } catch (error) {
       console.error('Error contributing to campaign:', error);
+      console.log(JSON.stringify(error));
       toast.error('Failed to process contribution. Please try again.');
     } finally {
       setIsContributing(false);
